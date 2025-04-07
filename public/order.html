@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Find Your Booking</title>
+    <style>
+        /* Basic styling for the find booking content box */
+        .find-booking-container {
+            max-width: 550px; /* Slightly adjusted width */
+            margin: 3rem auto; /* Center below top bar */
+            padding: 2.5rem 3rem; /* Adjusted padding */
+            /* Using gradient consistent with sidebar/movie cards from style.css */
+            background: linear-gradient(45deg, rgba(255, 255, 255, .05), rgba(205, 140, 56, .15));
+            backdrop-filter: blur(5px);
+            border-radius: 1rem; /* Match other rounded elements */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            color: #eee; /* Default text color */
+        }
+        /* Heading using theme color */
+        .find-booking-container h1 {
+            color: #cd8c38;
+            margin-bottom: 1rem;
+            font-weight: 600; /* Slightly bolder */
+        }
+        /* Instruction paragraph */
+        .find-booking-container p {
+            color: #ccc;
+            margin-bottom: 2rem; /* More space before form */
+            line-height: 1.6;
+        }
+        /* Form styling */
+        #findBookingForm {
+            display: flex;
+            flex-direction: column; /* Stack label/input and button */
+            align-items: center; /* Center items if needed, though width 100% dominates */
+        }
+        /* Input group styling */
+        #findBookingForm .input-group {
+             width: 100%; /* Make group take full width */
+             text-align: left;
+             margin-bottom: 1rem;
+        }
+         #findBookingForm label {
+             color: #ccc;
+             font-size: 0.9em; /* Slightly smaller label */
+             display: block;
+             margin-bottom: 0.4rem;
+             font-weight: 500;
+         }
+         /* Input field styling consistent with theme */
+         #findBookingForm input[type="text"] {
+             width: 100%;
+             padding: 12px 15px; /* Standard padding */
+             border: 1px solid #cd8c38; /* Theme border */
+             border-radius: 6px;
+             background-color: #262626; /* Dark input background */
+             color: #fff; /* Light text */
+             font-size: 1em;
+             font-family: inherit; /* Use main font */
+             transition: border-color 0.2s, box-shadow 0.2s;
+         }
+          #findBookingForm input[type="text"]:focus {
+             outline: none;
+             border-color: #b87b2a; /* Darker theme color on focus */
+             box-shadow: 0 0 0 3px rgba(205, 140, 56, 0.3); /* Subtle glow */
+         }
+
+        /* Ensure button uses theme style and has spacing */
+        #findBookingForm .btn {
+            width: 100%; /* Make button full width */
+            margin-top: 1.5rem; /* More space above button */
+            padding: 12px;
+            font-size: 1.1em;
+            /* Inherits background, color, border-radius etc. from .btn in style.css */
+        }
+    </style>
+</head>
+<body>
+    <section class="top-bar">
+        <div class="left-content">
+            <h2 class="title">Movie+Mania</h2>
+            <ul class="navigation">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html">Movies</a></li>
+                <li><a href="#">Theaters</a></li>
+                <li><a href="#">News</a></li>
+                <li><a class="active" href="find-booking.html">Find Booking</a></li>
+            </ul>
+        </div>
+        <div class="right-content">
+            <a href="login.html" class="login-btn btn" id="loginButton">Login</a>
+            <button id="logoutButton" class="logout-btn" style="display: none;">Logout</button>
+             <style>.logout-btn{background-color:#dc3545;border:none;padding:.5rem 1rem;border-radius:2rem;color:white;cursor:pointer;transition:.3s;margin-left:1rem;font-size:inherit;font-family:inherit;line-height:normal;vertical-align:middle;}.logout-btn:hover{background-color:#c82333;transform:scale(1.05);}</style>
+        </div>
+    </section>
+
+    <div class="main-container"> <div class="find-booking-container">
+            <h1>Find Your Booking</h1>
+            <p>Enter the Booking ID (Confirmation Number) you received to view your ticket details.</p>
+
+            <form id="findBookingForm">
+                <div class="input-group">
+                    <label for="bookingIdInput">Booking ID</label>
+                    <input type="text" id="bookingIdInput" placeholder="e.g., 67f19428895405fcb5b91539" required>
+                </div>
+                <button type="submit" class="btn">Find My Ticket</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Get references to elements
+        const findBookingForm = document.getElementById('findBookingForm');
+        const bookingIdInput = document.getElementById('bookingIdInput');
+
+        // Add listener for form submission
+        findBookingForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Stop the form from causing a page reload
+
+            const enteredId = bookingIdInput.value.trim(); // Get the ID, remove extra spaces
+
+            if (enteredId) {
+                // If an ID was entered, redirect to the ticket page
+                console.log(`Redirecting to ticket page for ID: ${enteredId}`);
+                window.location.href = `ticket.html?bookingId=${encodeURIComponent(enteredId)}`;
+            } else {
+                // If input was empty, inform the user
+                alert('Please enter your Booking ID.');
+                bookingIdInput.focus(); // Focus back to the input field
+            }
+        });
+    </script>
+
+    <script>
+         // Simple Auth UI logic
+         function updateAuthUI() {
+            const loginBtn = document.getElementById('loginButton');
+            const logoutBtn = document.getElementById('logoutButton');
+             if (localStorage.getItem('isLoggedIn') === 'true') {
+                 if(loginBtn) loginBtn.style.display = 'none';
+                 if(logoutBtn) logoutBtn.style.display = 'inline-block';
+             } else {
+                 if(loginBtn) loginBtn.style.display = 'inline-block';
+                 if(logoutBtn) logoutBtn.style.display = 'none';
+             }
+         }
+         const logoutBtn = document.getElementById('logoutButton');
+         if (logoutBtn) {
+             logoutBtn.addEventListener('click', () => {
+                 localStorage.clear(); // Clear all user info on logout
+                 updateAuthUI();
+                 alert('You have been logged out.');
+                 window.location.href = 'index.html';
+             });
+         }
+         // Run on page load
+         document.addEventListener('DOMContentLoaded', updateAuthUI);
+    </script>
+</body>
+</html> 
